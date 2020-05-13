@@ -13,6 +13,8 @@ const Posts = () => {
   const fetchPosts = () => {
     setisBusy(true);
     const url = `https://pixabay.com/api/?key=9830712-3e3ca065b544e613e5f68cb6d&page=${page}&per_page=5`;
+    // const url = "https://picsum.photos/v2/list?page=2&limit=100";
+
     console.log(url);
 
     fetch(url)
@@ -21,6 +23,7 @@ const Posts = () => {
         console.log(data);
         setPage(page + 1);
         setPosts([...posts, ...data.hits]);
+        // setPosts([...posts, ...data]);
         setisBusy(false);
       })
       .catch(e => {
@@ -43,8 +46,7 @@ const Posts = () => {
           return isBusy ? <ActivityIndicator /> : null;
         }}
         renderItem={({ item, index }) => {
-          console.log(item);
-          item.image = { uri: item.largeImageURL + "fasfd" };
+          item.image = { uri: item.largeImageURL };
           item.userImage = { uri: item.userImageURL };
           item.thumbnail = { uri: item.previewURL };
           return <Post post={item} />;

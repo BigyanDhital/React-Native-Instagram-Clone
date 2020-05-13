@@ -2,6 +2,8 @@ import "react-native-gesture-handler";
 
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -49,17 +51,19 @@ const App = () => {
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
-                  borderRadius: 100,
-                  borderWidth: 5,
-                  borderColor: "#fff",
-                  height: 60,
-                  width: 60,
                   marginTop: -40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#D74555",
                 }}>
-                <AntDesign name="plus" size={tabIconSize} color="#fff" />
+                <LinearGradient
+                  style={{
+                    borderRadius: 100,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: 60,
+                    width: 60,
+                  }}
+                  colors={["#E5197E", "#F88925"]}>
+                  <AntDesign name="plus" size={tabIconSize} color="#fff" />
+                </LinearGradient>
               </View>
             ),
           }}

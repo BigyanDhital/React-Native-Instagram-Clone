@@ -9,55 +9,87 @@ import {
   FlatList,
 } from "react-native";
 import { images } from "../../assets";
+import ViewStory from "./ViewStory";
 const Story = props => {
-  let { previewURL, image, download_url, largeImageURL } = props.story;
-  console.log("previewURL ", previewURL);
+  let { previewURL, image, onClick, viewed } = props.story;
   return (
-    <TouchableOpacity style={styles.story}>
-      {/* //   <View style={styles.border}> */}
-      <Image
-        //  source={{ uri: download_url }}
-        source={image}
-        style={styles.storyImage}
-      />
-      {/* //   </View> */}
+    <TouchableOpacity
+      style={[styles.story, viewed && { borderColor: "#eee" }]}
+      onPress={() => props.onClick()}>
+      <Image source={image} style={styles.storyImage} />
     </TouchableOpacity>
   );
 };
+let storyTimeout = null;
 
 const Stories = () => {
   const [stories, setStories] = useState(images);
   const [page, setPage] = useState(2);
-  useEffect(() => {
-    // fetchAvatars();
-  }, []);
-  const fetchAvatars = () => {
-    // const url = `https://pixabay.com/api/?key=9830712-3e3ca065b544e613e5f68cb6d&page=${page}&per_page=3`;
-    const url = `https://picsum.photos/v2/list?page=${page}&limit=10`;
-    console.log(url);
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setPage(page + 1);
-        // setStories(data.hits);
-        setStories(data);
-      })
-      .catch(e => {
-        console.log(e);
-        alert(JSON.stringify(e.message));
-      });
+  const [currentStory, setCurrentStory] = useState(null);
 
-    return null;
+  useEffect(() => {
+    // storyTimeout && clearTimeout(storyTimeout);
+    if (!currentStory) return;
+    let currentIndex = stories.findIndex(story => story.id === currentStory.id);
+    if (currentIndex >= stories.length || currentIndex < 0) {
+      closeStoryView();
+      return;
+    }
+    storyTimeout = setTimeout(() => {
+      selectStory(stories[currentIndex + 1]);
+    }, 3000);
+  }, [currentStory]);
+
+  const selectStory = story => {
+    console.log("Select story ", story);
+    setCurrentStory(story);
   };
+  changeStory = () => {};
+  const setStorySeen = id => {};
+  const closeStoryView = () => {
+    storyTimeout && clearTimeout(storyTimeout);
+    selectStory(null);
+  };
+  // const fetchAvatars = () => {
+  //   // const url = `https://pixabay.com/api/?key=9830712-3e3ca065b544e613e5f68cb6d&page=${page}&per_page=3`;
+  //   const url = `https://picsum.photos/v2/list?page=${page}&limit=10`;
+  //   console.log(url);
+  //   fetch(url)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       setPage(page + 1);
+  //       // setStories(data.hits);
+  //       setStories(data);
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //       alert(JSON.stringify(e.message));
+  //     });
+
+  //   return null;
+  // };
+  console.log("Current story is ", currentStory);
 
   return (
     <View style={styles.storiesContainer}>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal>
         {stories.map(story => (
-          <Story key={story.id} story={story} />
+          <Story
+            onClick={() => selectStory(story)}
+            key={story.id}
+            story={story}
+          />
         ))}
       </ScrollView>
+      {currentStory ? (
+        <ViewStory
+          story={currentStory}
+          stories={stories}
+          closeStoryView={closeStoryView}
+          visible={!!currentStory}
+        />
+      ) : null}
     </View>
   );
 };

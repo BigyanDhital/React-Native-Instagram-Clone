@@ -22,6 +22,7 @@ const LIKE_ANIMATION_ICON_SIZE = POST_ACTION_ICONS_SIZE * 3;
 const scaleLarge = POST_WIDTH / LIKE_ANIMATION_ICON_SIZE;
 const Post = props => {
   const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
   const likeAnim = new Animated.Value(0);
   let {
     id,
@@ -51,7 +52,7 @@ const Post = props => {
   });
   const smallIconScale = likeAnim.interpolate({
     inputRange: [0, 0.3, 1],
-    outputRange: [1, 0.3, 1],
+    outputRange: [1.1, 0.5, 1],
   });
   const opacity = likeAnim.interpolate({
     inputRange: [0, 0.6, 1],
