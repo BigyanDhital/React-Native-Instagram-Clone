@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, Animated, Modal, createA } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import FeatherIcon from "react-native-vector-icons/Feather";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const AnimatedModal = Animated.createAnimatedComponent(Modal);
@@ -30,27 +31,46 @@ const ViewStory = props => {
       style={{ flex: 1 }}
       animated={false}
       // transparent={true}
-      style={{ opacity: 0 }}
+      style={{ backgroundColor: "#000" }}
       onDismiss={closeStoryView}
       visible={props.visible}
       onRequestClose={() => closeStoryView()}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <TouchableOpacity onPress={() => closeStoryView()}>
-          <Text style={{ alignSelf: "flex-end" }}>Close</Text>
-        </TouchableOpacity>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#000",
+          position: "relative",
+        }}>
+        <View style={{ position: "absolute", top: 40, right: 20, zIndex: 2 }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#00000030",
+              borderRadius: 50,
+              height: 40,
+              width: 40,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={() => closeStoryView()}>
+            <FeatherIcon name="x" color="#fff" size={20} />
+            {/* <Text style={{ alignSelf: "flex-end", color: "#fff" }}>Close</Text> */}
+          </TouchableOpacity>
+        </View>
         <Animated.View
           style={{
             flex: 1,
             opacity: animation,
+
             transform: [{ scale: animation }],
           }}>
           <Image
-            resizeMode="contain"
+            resizeMode="cover"
             source={props.story.image}
-            style={{ height: undefined, width: undefined, flex: 1 }}
+            style={{ height: undefined, width: undefined, flex: 1, zIndex: 1 }}
           />
         </Animated.View>
-      </SafeAreaView>
+        {/* </SafeAreaView> */}
+      </View>
     </AnimatedModal>
   );
 };

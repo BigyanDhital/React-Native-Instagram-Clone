@@ -42,10 +42,10 @@ const UserInfo = props => {
       </LinearGradient>
       <View style={{ paddingTop: 20, alignItems: "center" }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={styles.userName}>James Hardem</Text>
+          <Text style={styles.userName}>Bigyan Dhital</Text>
           <Octicons name="verified" color="red" />
         </View>
-        <Text style={styles.userBio}>Athletic</Text>
+        <Text style={styles.userBio}>Photography</Text>
       </View>
       <View style={styles.userStatsContainer}>
         <View style={styles.userStat}>
