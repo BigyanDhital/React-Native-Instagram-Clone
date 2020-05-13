@@ -2,7 +2,7 @@
 
 ##### Built with React Native, as close to [this shot on Dribble](https://dribbble.com/shots/7112447) as I could.
 
-Uses FlatList, Animated/progressive image loading, Animated like heart, infinite loading.
+Uses FlatList, Animated/progressive image loading, Animated like heart, infinite scrolling.
 
 ### Run the project
 

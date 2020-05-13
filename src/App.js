@@ -6,6 +6,7 @@ import LinearGradient from "react-native-linear-gradient";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -16,6 +17,8 @@ import ProfilePage from "./pages/ProfilePage";
 
 const tabIconSize = 25;
 const Tabs = createBottomTabNavigator();
+// const UserProfile = createStackNavigator()
+
 const App = () => {
   return (
     <NavigationContainer>

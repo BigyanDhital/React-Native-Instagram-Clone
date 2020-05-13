@@ -36,8 +36,8 @@ const ProgressiveImage = props => {
         <Image
           onLoad={setSuccessAnim}
           onError={setError}
-          source={source}
           {...props}
+          source={source}
         />
       </Animated.View>
       {success || error ? null : (

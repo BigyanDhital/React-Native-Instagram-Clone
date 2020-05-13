@@ -12,7 +12,7 @@ const Posts = () => {
   }, []);
   const fetchPosts = () => {
     setisBusy(true);
-    const url = `https://pixabay.com/api/?key=9830712-3e3ca065b544e613e5f68cb6d&page=${page}&per_page=5`;
+    const url = `https://pixabay.com/api/?key=9830712-3e3ca065b544e613e5f68cb6d&page=${page}&per_page=20`;
     // const url = "https://picsum.photos/v2/list?page=2&limit=100";
 
     console.log(url);
@@ -39,7 +39,8 @@ const Posts = () => {
         style={{ flex: 1 }}
         data={posts}
         refreshing={isBusy}
-        keyExtractor={item => item.id.toString()}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
         onEndReached={fetchPosts}
         ListHeaderComponent={<Stories />}
         ListFooterComponent={() => {

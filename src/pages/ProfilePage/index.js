@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  Dimensions,
+  ActivityIndicator,
+} from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -20,20 +27,28 @@ const ProfilePage = () => {
     images: [],
   });
   const [isBusy, setisBusy] = useState(false);
+  const [page, setPage] = useState(1);
   useEffect(() => {
     fetchUserInfo();
   }, []);
 
   const fetchUserInfo = async () => {
-    let url = "https://picsum.photos/v2/list?page=1&limit=100";
-    let data = await fetch(url);
-    let images = await data.json();
-    console.log(url, images);
-    images = images.map(image => {
-      image.thumbnail = getThumb(image.download_url);
-      return image;
-    });
-    setUserInfo({ ...userInfo, images });
+    let url = `https://picsum.photos/v2/list?page=${page}&limit=100`;
+    try {
+      setisBusy(true);
+      let data = await fetch(url);
+      let images = await data.json();
+      console.log(url, images);
+      images = images.map(image => {
+        image.thumbnail = getThumb(image.download_url);
+        return image;
+      });
+      setUserInfo({ ...userInfo, images: [...userInfo.images, ...images] });
+      setPage(page + 1);
+      setisBusy(false);
+    } catch (e) {
+      setisBusy(false);
+    }
   };
 
   const getThumb = url => {
@@ -53,7 +68,16 @@ const ProfilePage = () => {
           data={userInfo.images}
           keyExtractor={item => item.id}
           numColumns={3}
+          showsVerticalScrollIndicator={false}
           ListHeaderComponent={<UserInfo {...{ userInfo }} />}
+          ListFooterComponent={
+            isBusy ? (
+              <ActivityIndicator
+                style={{ alignSelf: "center", paddingVertical: 50 }}
+              />
+            ) : null
+          }
+          onEndReached={fetchUserInfo}
           renderItem={({ item, index }) => {
             return (
               <View
