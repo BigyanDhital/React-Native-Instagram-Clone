@@ -1,7 +1,8 @@
 import React from "react";
 import { View, ScrollView, Text, Image, Dimensions } from "react-native";
-import { images } from "../../assets";
 import { FlatList } from "react-native-gesture-handler";
+import { ProgressiveImage } from "components";
+
 const { height, width } = Dimensions.get("window");
 
 const GRID_PADDING = 10;
@@ -28,7 +29,7 @@ const UserPhotos = props => {
                 padding: GRID_PADDING,
                 // padding: 5,
               }}>
-              <Image
+              <ProgressiveImage
                 source={{ uri: item.thumbnail }}
                 style={{
                   height: undefined,

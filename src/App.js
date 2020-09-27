@@ -5,93 +5,143 @@ import { View, Text, ScrollView } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import FeatherIcon from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
+
 import Homepage from "./pages/Homepage";
 import ExplorePage from "./pages/ExplorePage";
+import ExploreDetailPage from "./pages/ExplorePage/ExploreDetail";
+import AddNewPostPage from "./pages/AddNewPostPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import ProfilePage from "./pages/ProfilePage";
 
 const tabIconSize = 25;
-const Tabs = createBottomTabNavigator();
+const BottomTabBar = createBottomTabNavigator();
 // const UserProfile = createStackNavigator()
+const Explore = createStackNavigator();
+const ExploreStack = () => {
+  return (
+    <Explore.Navigator headerMode="none">
+      <Explore.Screen name="explorePage" component={ExplorePage} />
+      <Explore.Screen name="exploreDetail" component={ExploreDetailPage} />
+    </Explore.Navigator>
+  );
+};
 
+const colorFocused = "#F88925";
+const iconColor = "#222";
 const App = () => {
   return (
     <NavigationContainer>
-      <Tabs.Navigator
+      <BottomTabBar.Navigator
         tabBarOptions={{
+          keyboardHidesTabBar: true,
+
           showLabel: false,
           style: {
-            paddingVertical: 5,
+            elevation: 0,
+            // paddingVertical: 5,
             backgroundColor: "#ffffff00",
             borderTopWidth: 0,
           },
         }}>
-        <Tabs.Screen
+        <BottomTabBar.Screen
           options={{
             tabBarIcon: ({ focused }) => (
-              <Entypo name="home" size={tabIconSize} />
+              <Entypo
+                name="home"
+                size={tabIconSize}
+                color={focused ? colorFocused : iconColor}
+              />
             ),
           }}
-          name="Home"
+          name="home"
           component={Homepage}
         />
-        <Tabs.Screen
+        <BottomTabBar.Screen
           options={{
             tabBarIcon: ({ focused }) => (
-              <AntDesign name="search1" size={tabIconSize} />
+              <AntDesign
+                name="search1"
+                size={tabIconSize}
+                color={focused ? colorFocused : iconColor}
+              />
             ),
           }}
-          name="Explore"
-          component={ExplorePage}
+          name="explore"
+          component={ExploreStack}
         />
-        <Tabs.Screen
+        <BottomTabBar.Screen
           options={{
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
                   marginTop: -40,
+                  elevation: 4,
                 }}>
                 <LinearGradient
                   style={{
                     borderRadius: 100,
-                    justifyContent: "center",
-                    alignItems: "center",
                     height: 60,
                     width: 60,
                   }}
-                  colors={["#E5197E", "#F88925"]}>
-                  <AntDesign name="plus" size={tabIconSize} color="#fff" />
+                  colors={["#E5197E", colorFocused]}>
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderWidth: 2,
+                      borderColor: "#fff",
+                      elevation: 1,
+                      borderRadius: 100,
+                    }}>
+                    <AntDesign
+                      name="plus"
+                      size={tabIconSize}
+                      color={focused ? colorFocused : iconColor}
+                      color="#fff"
+                    />
+                  </View>
                 </LinearGradient>
               </View>
             ),
           }}
-          name="NewPost"
-          component={ExplorePage}
+          name="addNewPost"
+          component={AddNewPostPage}
         />
-        <Tabs.Screen
+        <BottomTabBar.Screen
           options={{
             tabBarIcon: ({ focused }) => (
-              <AntDesign name="hearto" size={tabIconSize} />
+              <AntDesign
+                name="hearto"
+                size={tabIconSize}
+                color={focused ? colorFocused : iconColor}
+              />
             ),
           }}
           name="notifications"
           component={NotificationsPage}
         />
-        <Tabs.Screen
+        <BottomTabBar.Screen
           options={{
             tabBarIcon: ({ focused }) => (
-              <FeatherIcon name="user" size={tabIconSize} />
+              <FeatherIcon
+                name="user"
+                size={tabIconSize}
+                color={focused ? colorFocused : iconColor}
+              />
             ),
           }}
           name="profile"
           component={ProfilePage}
         />
-      </Tabs.Navigator>
+      </BottomTabBar.Navigator>
     </NavigationContainer>
   );
 };

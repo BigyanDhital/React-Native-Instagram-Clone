@@ -8,25 +8,27 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import { images } from "../../assets";
 import ViewStory from "./ViewStory";
 const Story = props => {
-  let { previewURL, image, onClick, viewed } = props.story;
+  let { previewURL, largeImageURL, image, onClick } = props.story;
   return (
     <TouchableOpacity
-      style={[styles.story, viewed && { borderColor: "#eee" }]}
+      style={[styles.story, { borderColor: props.seen ? "#eee" : "red" }]}
       onPress={() => props.onClick()}>
-      <Image source={image} style={styles.storyImage} />
+      <Image source={{ uri: largeImageURL }} style={styles.storyImage} />
     </TouchableOpacity>
   );
 };
 let storyTimeout = null;
 
 const Stories = () => {
-  const [stories, setStories] = useState(images);
+  const [stories, setStories] = useState([]);
   const [page, setPage] = useState(2);
   const [currentStory, setCurrentStory] = useState(null);
-
+  const [seenStories, setSeenStories] = useState([]);
+  useEffect(() => {
+    fetchAvatars();
+  }, []);
   useEffect(() => {
     // storyTimeout && clearTimeout(storyTimeout);
     if (!currentStory) return;
@@ -41,46 +43,49 @@ const Stories = () => {
   }, [currentStory]);
 
   const selectStory = story => {
-    console.log("Select story ", story);
     setCurrentStory(story);
+    story?.id && setSeenStories([...seenStories, story.id]);
   };
   changeStory = () => {};
-  const setStorySeen = id => {};
+
   const closeStoryView = () => {
     storyTimeout && clearTimeout(storyTimeout);
     selectStory(null);
   };
-  // const fetchAvatars = () => {
-  //   // const url = `https://pixabay.com/api/?key=9830712-3e3ca065b544e613e5f68cb6d&page=${page}&per_page=3`;
-  //   const url = `https://picsum.photos/v2/list?page=${page}&limit=10`;
-  //   console.log(url);
-  //   fetch(url)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //       setPage(page + 1);
-  //       // setStories(data.hits);
-  //       setStories(data);
-  //     })
-  //     .catch(e => {
-  //       console.log(e);
-  //       alert(JSON.stringify(e.message));
-  //     });
+  const fetchAvatars = () => {
+    const url = `https://pixabay.com/api/?key=9830712-3e3ca065b544e613e5f68cb6d&q=food,landscape&page=${page}&per_page=20`;
+    // const url = `https://picsum.photos/v2/list?page=${page}&limit=10`;
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setPage(page + 1);
+        setStories(data.hits);
+        // setStories(data);
+      })
+      .catch(e => {
+        console.log(e);
+        alert(JSON.stringify(e.message));
+      });
 
-  //   return null;
-  // };
-  console.log("Current story is ", currentStory);
+    return null;
+  };
 
   return (
     <View style={styles.storiesContainer}>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-        {stories.map(story => (
-          <Story
-            onClick={() => selectStory(story)}
-            key={story.id}
-            story={story}
-          />
-        ))}
+        {stories.map((story, i) => {
+          const seen = seenStories.includes(story.id);
+          console.log({ seenStories, id: story.id, seen });
+          return (
+            <Story
+              onClick={() => selectStory(story)}
+              key={story.id}
+              seen={seen}
+              story={story}
+            />
+          );
+        })}
       </ScrollView>
       {currentStory ? (
         <ViewStory
@@ -108,7 +113,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: "red",
+    // borderColor: "red",
   },
   // border: { borderWidth: 2, borderColor: "red", borderRadius: 50 },
   storyImage: {

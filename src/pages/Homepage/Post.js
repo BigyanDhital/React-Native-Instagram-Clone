@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -13,47 +13,39 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { DoubleTap, ProgressiveImage } from "components";
 const { width, height } = Dimensions.get("window");
-// import thumbnail from "../../assets/images/image1.jpg";
 const POST_WIDTH = width * 0.9;
 const POST_HEIGHT = width;
 
 const POST_ACTION_ICONS_SIZE = 21;
-const LIKE_ANIMATION_ICON_SIZE = POST_ACTION_ICONS_SIZE * 3;
-const scaleLarge = POST_WIDTH / LIKE_ANIMATION_ICON_SIZE;
+const LIKE_ANIMATION_ICON_SIZE = POST_WIDTH / 4;
+
 const Post = props => {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-  const likeAnim = new Animated.Value(0);
-  let {
-    id,
-    user = "username",
-    userImage,
-    thumbnail,
-    image,
-    likes,
-    comments,
-  } = props.post;
+  const [likes, setLikes] = useState(props.post.likes);
+  const likeAnim = useRef(new Animated.Value(0)).current;
+  let { id, user, userImage, thumbnail, image, comments } = props.post;
   if (!userImage) userImage = image;
 
   useEffect(() => {
+    likeAnim.setValue(0);
     Animated.timing(likeAnim, {
       duration: 800,
-      toValue: liked ? 1 : 0,
+      toValue: 1,
       useNativeDriver: true,
     }).start();
   }, [liked]);
+
   const likePost = () => {
-    setLiked(!liked);
+    setLiked(l => !l);
+    setLikes(l => (liked ? l - 1 : l + 1));
   };
 
   const scale = likeAnim.interpolate({
     inputRange: [0, 0.3, 0.7, 0.75, 1],
-    outputRange: [scaleLarge, 1, 3, 1, 4],
+    outputRange: [0, 1, 0.8, 1, 0],
   });
-  const smallIconScale = likeAnim.interpolate({
-    inputRange: [0, 0.3, 1],
-    outputRange: [1.1, 0.5, 1],
-  });
+
   const opacity = likeAnim.interpolate({
     inputRange: [0, 0.6, 1],
     outputRange: [1, 1, 0],
@@ -93,13 +85,14 @@ const Post = props => {
               }}
             />
           </View>
-          <Text style={{ marginLeft: 10, fontWeight: "bold" }}>{user}</Text>
+          <Text style={{ marginLeft: 10, fontWeight: "bold" }}>
+            {user || "username"}
+          </Text>
         </View>
         <Entypo name="dots-three-vertical" size={16} />
       </View>
-      <DoubleTap doubleTap={() => likePost()}>
+      <DoubleTap doubleTap={likePost}>
         <ProgressiveImage
-          // source={{ uri: largeImageURL }}
           source={image}
           thumbnail={thumbnail}
           style={{
@@ -124,13 +117,12 @@ const Post = props => {
           }}>
           <View
             style={{
-              // backgroundColor: "#ffffff50",
               padding: 10,
               borderRadius: 10,
             }}>
             <AntDesign
-              name="hearto"
-              color={"#ff0000"}
+              name="heart"
+              color={"#fff"}
               size={LIKE_ANIMATION_ICON_SIZE}
             />
           </View>
@@ -144,13 +136,11 @@ const Post = props => {
         }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <TouchableOpacity onPress={likePost}>
-            <Animated.View style={{ transform: [{ scale: smallIconScale }] }}>
-              <AntDesign
-                name="hearto"
-                color={liked ? "#ff0000" : "#444"}
-                size={POST_ACTION_ICONS_SIZE}
-              />
-            </Animated.View>
+            <AntDesign
+              name={liked ? "heart" : "hearto"}
+              color={liked ? "#ff0000" : "#444"}
+              size={POST_ACTION_ICONS_SIZE}
+            />
           </TouchableOpacity>
           <Text style={{ paddingLeft: 7 }}>{likes}</Text>
           <SimpleLineIcons
