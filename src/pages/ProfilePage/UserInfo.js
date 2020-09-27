@@ -63,7 +63,7 @@ const UserInfo = props => {
       </View>
       <View style={styles.userActionsContainer}>
         <View style={styles.followButton}>
-          <TouchableOpacity style={{}}>
+          <TouchableOpacity onPress={() => null} style={{}}>
             <LinearGradient
               style={{
                 paddingVertical: 12,
@@ -80,6 +80,7 @@ const UserInfo = props => {
         </View>
         <View style={styles.messageButton}>
           <TouchableOpacity
+            onPress={() => null}
             style={{
               paddingVertical: 12,
               paddingHorizontal: 20,
