@@ -37,7 +37,7 @@ export default HomePage;
 
 const styles = StyleSheet.create({
   row: { flexDirection: "row", flex: 1, alignItems: "center" },
-  instagramTextLogoContainer: {},
+  instagramTextLogoContainer: { paddingHorizontal: 10 },
   instagramTextLogo: {
     alignSelf: "flex-start",
     height: 40,

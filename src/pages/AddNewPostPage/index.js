@@ -1,29 +1,52 @@
 import React from "react";
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Dimensions,
+  Image,
+  Linking,
+} from "react-native";
 import { Header } from "components";
-
+import FeatherIcon from "react-native-vector-icons/Feather";
+import { TouchableOpacity } from "react-native-gesture-handler";
+const { width } = Dimensions.get("window");
 const AddNewPostPage = () => {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Header title="Gallery" />
       <Text
         style={{
           fontSize: 18,
-          color: "#888",
+          color: "#F88925",
           fontWeight: "500",
           textAlign: "center",
         }}>
-        Add a new post
+        Inspired by
       </Text>
-      <Text
-        style={{
-          fontSize: 15,
-          color: "#888",
-          fontWeight: "500",
-          textAlign: "center",
-        }}>
-        Coming soon
-      </Text>
+
+      <ScrollView style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingVertical: 10 }}>
+          <Image
+            source={require("../../assets/images/dribble_inspiration.jpg")}
+            style={{ width: width, height: width, resizeMode: "contain" }}
+          />
+        </View>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-end",
+
+            paddingHorizontal: 10,
+          }}
+          onPress={() => Linking.openURL("https://dribbble.com/shots/7112447")}>
+          <Text style={{ color: "blue", paddingHorizontal: 5 }}>
+            View on Dribbble
+          </Text>
+          <FeatherIcon name="external-link" color="blue" />
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };

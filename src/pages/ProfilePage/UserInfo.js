@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   userStat: { flex: 1, justifyContent: "center", alignItems: "center" },
   statNumber: {
     fontSize: 18,
-    fontWeight: "800",
+    fontWeight: "bold",
   },
   statLabel: {
     fontWeight: "bold",

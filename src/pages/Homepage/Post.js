@@ -11,6 +11,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Octicons from "react-native-vector-icons/Octicons";
 import { DoubleTap, ProgressiveImage } from "components";
 const { width, height } = Dimensions.get("window");
 const POST_WIDTH = width * 0.9;
@@ -85,9 +86,10 @@ const Post = props => {
               }}
             />
           </View>
-          <Text style={{ marginLeft: 10, fontWeight: "bold" }}>
+          <Text style={{ marginLeft: 8, marginRight: 4, fontWeight: "bold" }}>
             {user || "username"}
           </Text>
+          <Octicons name="verified" color="red" />
         </View>
         <Entypo name="dots-three-vertical" size={16} />
       </View>

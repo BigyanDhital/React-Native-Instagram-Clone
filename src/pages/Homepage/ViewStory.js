@@ -50,12 +50,16 @@ const ViewStory = props => {
     inputRange: [0, 1],
     outputRange: [-width, 0],
   });
+  const translateY = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-width + 100, 0],
+  });
   return (
     // <FlingGestureHandler
     //   direction={Directions.DOWN}
     //   numberOfPointers={40}
     //   onHandlerStateChange={({ nativeEvent }) => {
-    //     if (nativeEvent.oldState === State.ACTIVE) {
+    //     if (nativeEvent.2oldState === State.ACTIVE) {
     //       props.closeStoryView();
     //     }
     //   }}>
@@ -65,6 +69,7 @@ const ViewStory = props => {
       // transparent={true}
       // animationType="slide"
       direction="top"
+      opacity={animation}
       style={{ backgroundColor: "#000" }}
       onDismiss={closeStoryView}
       visible={props.visible}
@@ -105,7 +110,7 @@ const ViewStory = props => {
             flex: 1,
             opacity: animation,
 
-            transform: [{ scale: animation }],
+            transform: [{ translateY }, { scale: animation }],
           }}>
           <Image
             resizeMode="cover"
